@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -29,6 +30,7 @@ public class UserService {
         });
         User user = userMapper.toModel(userRequestDto);
         User savedUser = userRepository.save(user);
+        log.info(userRequestDto.toString());
         return userMapper.toDto(savedUser);
     }
 

@@ -4,9 +4,11 @@ import com.victordevvs.crudsimples.dto.UserRequestDto;
 import com.victordevvs.crudsimples.dto.UserResponseDto;
 import com.victordevvs.crudsimples.service.UserService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -30,7 +32,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public UserResponseDto replace(@PathVariable Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
         return userService.replace(id, userRequestDto);
     }

@@ -32,4 +32,15 @@ public class UserRequestDto {
         @NotEmpty(message = "password is mandatory")
         @Size(min = 6, message = "password must have at least 6 characters")
         private String password;
+
+        @Override
+        public String toString() {
+                return "UserRequestDto{" +
+                        "id=" + id +
+                        ", name='" + name + '\'' +
+                        ", email='" + email + '\'' +
+                        ", birthDate=" + birthDate +
+                        ", password='" + password + '\'' +
+                        '}';
+        }
 }
