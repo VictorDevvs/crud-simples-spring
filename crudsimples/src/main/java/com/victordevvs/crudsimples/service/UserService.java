@@ -3,6 +3,7 @@ package com.victordevvs.crudsimples.service;
 import com.victordevvs.crudsimples.dto.UserRequestDto;
 import com.victordevvs.crudsimples.dto.UserResponseDto;
 import com.victordevvs.crudsimples.exception.ExistingEmailException;
+import com.victordevvs.crudsimples.exception.UserNotFoundException;
 import com.victordevvs.crudsimples.mapper.UserMapper;
 import com.victordevvs.crudsimples.model.User;
 import com.victordevvs.crudsimples.repository.UserRepository;
@@ -35,4 +36,10 @@ public class UserService {
         log.info("User saved with id: {}", savedUser.getId());
         return userMapper.toDto(savedUser);
     }
+
+    public UserResponseDto findById(Long id){
+        return userRepository.findById(id).map(userMapper::toDto).orElseThrow(() ->
+                new UserNotFoundException("User not found with id: " + id));
+    }
+
 }
