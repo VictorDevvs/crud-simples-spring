@@ -2,6 +2,7 @@ package com.victordevvs.crudsimples.service;
 
 import com.victordevvs.crudsimples.dto.UserRequestDto;
 import com.victordevvs.crudsimples.dto.UserResponseDto;
+import com.victordevvs.crudsimples.exception.ExistingEmailException;
 import com.victordevvs.crudsimples.mapper.UserMapper;
 import com.victordevvs.crudsimples.model.User;
 import com.victordevvs.crudsimples.repository.UserRepository;
@@ -27,7 +28,7 @@ public class UserService {
     public UserResponseDto save(UserRequestDto userRequestDto) {
         log.info("Received request to save user");
         userRepository.findByEmail(userRequestDto.getEmail()).ifPresent(u -> {
-            //throw new ExistingEmailException("The email is already in use");
+            throw new ExistingEmailException("The email is already in use");
         });
         User user = userMapper.toModel(userRequestDto);
         User savedUser = userRepository.save(user);
