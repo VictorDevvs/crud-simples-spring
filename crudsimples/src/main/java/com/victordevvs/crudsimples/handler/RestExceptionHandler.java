@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -36,5 +37,15 @@ public class RestExceptionHandler {
                 .message(errors)
                 .build(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiExceptionDetails> handleInvalidFieldException(NoResourceFoundException ex){
+        return new ResponseEntity<>(ApiExceptionDetails.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("ID is null or empty")
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+
 
 }
