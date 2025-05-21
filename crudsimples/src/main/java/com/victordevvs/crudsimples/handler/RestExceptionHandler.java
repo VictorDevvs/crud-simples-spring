@@ -1,5 +1,6 @@
 package com.victordevvs.crudsimples.handler;
 
+import com.victordevvs.crudsimples.exception.ExistingEmailException;
 import com.victordevvs.crudsimples.exception.UserNotFoundException;
 import com.victordevvs.crudsimples.exception.detais.ApiExceptionDetails;
 import org.springframework.http.HttpStatus;
@@ -47,5 +48,12 @@ public class RestExceptionHandler {
                 .build(), HttpStatus.BAD_REQUEST);
     }
 
-
+    @ExceptionHandler(ExistingEmailException.class)
+    public ResponseEntity<ApiExceptionDetails> handleExistingEmailException(ExistingEmailException ex){
+        return new ResponseEntity<>(ApiExceptionDetails.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .build(), HttpStatus.BAD_REQUEST);
+    }
 }
