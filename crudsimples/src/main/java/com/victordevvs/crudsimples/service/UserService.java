@@ -42,4 +42,16 @@ public class UserService {
                 new UserNotFoundException("User not found with id: " + id));
     }
 
+    @Transactional
+    public UserResponseDto replace(Long id, UserRequestDto userRequestDto){
+        User user = userRepository.findById(id).map(u -> {
+            u.setName(userRequestDto.getName());
+            u.setEmail(userRequestDto.getEmail());
+            u.setPassword(userRequestDto.getPassword());
+            return userRepository.save(u);
+        }).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+
+        return userMapper.toDto(user);
+    }
+
 }
