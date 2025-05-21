@@ -29,4 +29,10 @@ public class UserController {
         return userService.save(userRequestDto);
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponseDto replace(@PathVariable Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
+        return userService.replace(id, userRequestDto);
+    }
+
 }
