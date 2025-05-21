@@ -11,9 +11,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.security.KeyStore;
-
-@Slf4j
 @Service
 public class UserService {
 
@@ -27,13 +24,11 @@ public class UserService {
 
     @Transactional
     public UserResponseDto save(UserRequestDto userRequestDto) {
-        log.info("Received request to save user");
         userRepository.findByEmail(userRequestDto.getEmail()).ifPresent(u -> {
             throw new ExistingEmailException("The email is already in use");
         });
         User user = userMapper.toModel(userRequestDto);
         User savedUser = userRepository.save(user);
-        log.info("User saved with id: {}", savedUser.getId());
         return userMapper.toDto(savedUser);
     }
 
