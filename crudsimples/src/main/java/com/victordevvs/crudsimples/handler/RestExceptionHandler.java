@@ -4,10 +4,14 @@ import com.victordevvs.crudsimples.exception.UserNotFoundException;
 import com.victordevvs.crudsimples.exception.detais.ApiExceptionDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class RestExceptionHandler {
@@ -20,4 +24,17 @@ public class RestExceptionHandler {
                 .message(ex.getMessage())
                 .build(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiExceptionDetails> handleInvalidFieldException(MethodArgumentNotValidException ex){
+        String errors =  ex.getBindingResult().getFieldErrors().stream()
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.joining("; "));
+        return new ResponseEntity<>(ApiExceptionDetails.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(errors)
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+
 }
